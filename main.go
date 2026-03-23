@@ -49,6 +49,7 @@ type runtimeConfig struct {
 	SamplingIntervalMS     int           `json:"samplingIntervalMs"`
 	ChartPointsLimit       int           `json:"chartPointsLimit"`
 	DisplaySmoothingFactor float64       `json:"displaySmoothingFactor"`
+	AllowedOrigins         []string      `json:"-"`
 }
 
 func main() {
@@ -120,7 +121,7 @@ func newServer(staticDir string, cfg runtimeConfig) http.Handler {
 		log.Printf("frontend unavailable: %v", err)
 	}
 
-	return withCORS(withLogging(spaHandler(frontendFS, mux)))
+	return withCORS(cfg.AllowedOrigins, withLogging(spaHandler(frontendFS, mux)))
 }
 
 func serveDownload(w http.ResponseWriter, r *http.Request, bytesToWrite int64, chunkSize int64) {
@@ -223,22 +224,26 @@ func shouldSkipAccessLog(r *http.Request, noisyLoggingEnabled bool) bool {
 	}
 }
 
-func withCORS(next http.Handler) http.Handler {
-	allowedOrigins := map[string]struct{}{
-		"https://speedtest.taurusxin.com":    {},
-		"https://v4-speedtest.taurusxin.com": {},
-		"https://v6-speedtest.taurusxin.com": {},
-		"http://localhost:5173":              {},
-		"http://127.0.0.1:5173":              {},
+func withCORS(allowedOrigins []string, next http.Handler) http.Handler {
+	allowedOriginSet := make(map[string]struct{}, len(allowedOrigins))
+	for _, origin := range allowedOrigins {
+		allowedOriginSet[origin] = struct{}{}
 	}
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		origin := r.Header.Get("Origin")
-		if _, ok := allowedOrigins[origin]; ok {
-			w.Header().Set("Access-Control-Allow-Origin", origin)
-			w.Header().Set("Vary", "Origin")
-			w.Header().Set("Access-Control-Allow-Methods", "GET,POST,OPTIONS")
-			w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		if origin != "" {
+			allowOrigin := len(allowedOriginSet) == 0
+			if !allowOrigin {
+				_, allowOrigin = allowedOriginSet[origin]
+			}
+
+			if allowOrigin {
+				w.Header().Set("Access-Control-Allow-Origin", origin)
+				w.Header().Set("Vary", "Origin")
+				w.Header().Set("Access-Control-Allow-Methods", "GET,POST,OPTIONS")
+				w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+			}
 		}
 
 		if r.Method == http.MethodOptions {
@@ -363,8 +368,27 @@ func loadRuntimeConfigFromEnv() (runtimeConfig, error) {
 	cfg.SamplingIntervalMS = envIntOrDefault("SPEEDTEST_SAMPLING_INTERVAL_MS", 250)
 	cfg.ChartPointsLimit = envIntOrDefault("SPEEDTEST_CHART_POINTS_LIMIT", 120)
 	cfg.DisplaySmoothingFactor = envFloatOrDefault("SPEEDTEST_DISPLAY_SMOOTHING_FACTOR", 0.35)
+	cfg.AllowedOrigins = parseCSVEnv("SPEEDTEST_ALLOWED_ORIGINS")
 
 	return cfg, nil
+}
+
+func parseCSVEnv(key string) []string {
+	raw := strings.TrimSpace(os.Getenv(key))
+	if raw == "" {
+		return nil
+	}
+
+	parts := strings.Split(raw, ",")
+	values := make([]string, 0, len(parts))
+	for _, part := range parts {
+		trimmed := strings.TrimSpace(part)
+		if trimmed != "" {
+			values = append(values, trimmed)
+		}
+	}
+
+	return values
 }
 
 func clientIP(r *http.Request) string {

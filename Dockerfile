@@ -21,7 +21,7 @@ COPY main_test.go ./
 COPY web ./web
 COPY --from=web-builder /app/web/dist ./web/dist
 
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /out/speedtest-next .
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -trimpath -o /out/speedtest-next .
 
 
 FROM alpine:3.21
