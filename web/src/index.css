@@ -3,6 +3,31 @@
 :root {
   font-family: 'Manrope', 'Segoe UI', sans-serif;
   color: #21314d;
+  color-scheme: light;
+  --app-text: #21314d;
+  --app-title: #0f223f;
+  --app-muted: #4f5f79;
+  --app-soft: #5f708a;
+  --app-soft-2: #6d7e96;
+  --app-card-bg: rgba(255, 255, 255, 0.82);
+  --app-card-border: rgba(196, 214, 236, 0.72);
+  --app-card-shadow: 0 18px 44px rgba(20, 66, 118, 0.12);
+  --app-chip-bg: rgba(244, 249, 255, 0.95);
+  --app-chip-border: rgba(213, 228, 246, 0.95);
+  --app-hero-glow: radial-gradient(circle, rgba(0, 173, 239, 0.22), rgba(0, 173, 239, 0));
+  --app-chart-placeholder:
+    linear-gradient(180deg, rgba(248, 251, 255, 0.92), rgba(241, 247, 255, 0.72));
+  --app-badge-bg: rgba(4, 156, 219, 0.1);
+  --app-badge-color: #0b7db3;
+  --app-segment-bg: rgba(238, 246, 255, 0.95);
+  --app-segment-border: rgba(204, 221, 243, 0.95);
+  --app-segment-shadow: 0 10px 24px rgba(29, 113, 188, 0.18);
+  --app-summary-download:
+    linear-gradient(145deg, rgba(230, 245, 255, 0.96), rgba(255, 255, 255, 0.84));
+  --app-summary-upload:
+    linear-gradient(145deg, rgba(228, 252, 244, 0.96), rgba(255, 255, 255, 0.84));
+  --app-summary-neutral:
+    linear-gradient(145deg, rgba(245, 249, 255, 0.96), rgba(255, 255, 255, 0.84));
   background:
     radial-gradient(circle at top left, rgba(65, 191, 240, 0.18), transparent 32%),
     radial-gradient(circle at 85% 15%, rgba(20, 183, 137, 0.12), transparent 22%),
@@ -25,6 +50,7 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  color: var(--app-text);
 }
 
 button,
@@ -39,14 +65,49 @@ select {
 }
 
 .mantine-Title-root {
-  color: #0f223f;
+  color: var(--app-title);
 }
 
 .mantine-SegmentedControl-root {
-  background: rgba(238, 246, 255, 0.95);
-  border: 1px solid rgba(204, 221, 243, 0.95);
+  background: var(--app-segment-bg);
+  border: 1px solid var(--app-segment-border);
 }
 
 .mantine-SegmentedControl-indicator {
-  box-shadow: 0 10px 24px rgba(29, 113, 188, 0.18);
+  box-shadow: var(--app-segment-shadow);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color: #e6eefc;
+    color-scheme: dark;
+    --app-text: #dfe7f5;
+    --app-title: #f4f8ff;
+    --app-muted: #a5b4ce;
+    --app-soft: #8e9ab2;
+    --app-soft-2: #93a2be;
+    --app-card-bg: rgba(12, 19, 33, 0.78);
+    --app-card-border: rgba(72, 91, 126, 0.44);
+    --app-card-shadow: 0 18px 44px rgba(0, 0, 0, 0.34);
+    --app-chip-bg: rgba(20, 29, 46, 0.92);
+    --app-chip-border: rgba(66, 82, 112, 0.68);
+    --app-hero-glow: radial-gradient(circle, rgba(48, 182, 255, 0.18), rgba(48, 182, 255, 0));
+    --app-chart-placeholder:
+      linear-gradient(180deg, rgba(19, 29, 49, 0.92), rgba(14, 22, 38, 0.82));
+    --app-badge-bg: rgba(56, 189, 248, 0.16);
+    --app-badge-color: #7dd3fc;
+    --app-segment-bg: rgba(19, 29, 49, 0.96);
+    --app-segment-border: rgba(66, 82, 112, 0.74);
+    --app-segment-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
+    --app-summary-download:
+      linear-gradient(145deg, rgba(11, 38, 69, 0.92), rgba(16, 24, 39, 0.86));
+    --app-summary-upload:
+      linear-gradient(145deg, rgba(11, 54, 54, 0.9), rgba(16, 24, 39, 0.86));
+    --app-summary-neutral:
+      linear-gradient(145deg, rgba(25, 32, 51, 0.94), rgba(16, 24, 39, 0.86));
+    background:
+      radial-gradient(circle at top left, rgba(56, 189, 248, 0.12), transparent 30%),
+      radial-gradient(circle at 85% 15%, rgba(20, 184, 166, 0.12), transparent 24%),
+      linear-gradient(180deg, #08111f 0%, #0b1424 48%, #101828 100%);
+  }
 }

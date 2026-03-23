@@ -190,14 +190,14 @@ function App() {
           </Badge>
           <Title order={1}>TaurusXin 网络测速平台</Title>
           <Text className="hero-description">
-            在同一界面里切换 IPv4 / IPv6 节点，依次完成延迟、下载、上传测试，并输出清晰的速度曲线。
+            通过浏览器即可测试您与全球多个节点之间的网络性能，全面展示下载/上传速度、延迟、抖动等关键指标，以及实时速度曲线，帮助您深入了解当前网络状况。
           </Text>
           <div className="ip-block">
             <Group gap="xs" className="ip-header">
               <ThemeIcon radius="xl" size={32} variant="light" color="cyan">
                 <IconWorld size={18} />
               </ThemeIcon>
-              <Text className="section-label">当前出口 IP</Text>
+              <Text className="section-label">您的 IP</Text>
             </Group>
             <div className="ip-lines">
               <Text className="ip-line">

@@ -2,6 +2,9 @@
   width: min(1180px, calc(100% - 32px));
   margin: 0 auto;
   padding: 48px 0 64px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
 .hero-panel {
@@ -16,9 +19,9 @@
 .summary-card,
 .chart-card,
 .error-banner {
-  border: 1px solid rgba(196, 214, 236, 0.72);
-  box-shadow: 0 18px 44px rgba(20, 66, 118, 0.12);
-  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid var(--app-card-border);
+  box-shadow: var(--app-card-shadow);
+  background: var(--app-card-bg);
   backdrop-filter: blur(20px);
 }
 
@@ -35,21 +38,21 @@
   inset: auto auto -72px -56px;
   width: 220px;
   height: 220px;
-  background: radial-gradient(circle, rgba(0, 173, 239, 0.22), rgba(0, 173, 239, 0));
+  background: var(--app-hero-glow);
   pointer-events: none;
 }
 
 .hero-badge {
   margin-bottom: 16px;
-  background: rgba(4, 156, 219, 0.1);
-  color: #0b7db3;
+  background: var(--app-badge-bg);
+  color: var(--app-badge-color);
 }
 
 .hero-description {
   max-width: 620px;
   font-size: 1.05rem;
   line-height: 1.75;
-  color: #4f5f79;
+  color: var(--app-muted);
 }
 
 .ip-block {
@@ -72,16 +75,16 @@
   justify-content: space-between;
   gap: 16px;
   margin: 0;
-  color: #5f708a;
+  color: var(--app-soft);
 }
 
 .ip-line span {
   font-weight: 700;
-  color: #6d7e96;
+  color: var(--app-soft-2);
 }
 
 .ip-line strong {
-  color: #142341;
+  color: var(--app-title);
   font-weight: 700;
   overflow-wrap: anywhere;
   text-align: right;
@@ -89,16 +92,18 @@
 
 .hero-actions {
   margin-top: 28px;
+  width: 100%;
 }
 
 .switch-hint {
   font-size: 0.95rem;
   font-weight: 700;
-  color: #5f708a;
+  color: var(--app-soft);
 }
 
 .primary-button {
   box-shadow: 0 18px 40px rgba(4, 146, 214, 0.28);
+  margin-left: auto;
 }
 
 .target-hint {
@@ -119,7 +124,7 @@
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #6d7e96;
+  color: var(--app-soft-2);
 }
 
 .speed-readout {
@@ -134,16 +139,16 @@
   font-size: clamp(3rem, 5vw, 4.5rem);
   line-height: 0.95;
   font-weight: 700;
-  color: #10233f;
+  color: var(--app-title);
 }
 
 .speed-readout small {
   font-size: 1rem;
-  color: #687b98;
+  color: var(--app-soft-2);
 }
 
 .status-message {
-  color: #4f607c;
+  color: var(--app-muted);
   min-height: 1.6em;
 }
 
@@ -153,29 +158,21 @@
   gap: 12px;
   padding: 14px 16px;
   border-radius: 20px;
-  background: rgba(244, 249, 255, 0.95);
-  border: 1px solid rgba(213, 228, 246, 0.95);
+  background: var(--app-chip-bg);
+  border: 1px solid var(--app-chip-border);
   min-width: 0;
 }
 
 .metric-label {
   font-size: 0.82rem;
-  color: #73839b;
+  color: var(--app-soft-2);
 }
 
 .metric-value {
   font-size: 1rem;
   font-weight: 700;
-  color: #142341;
+  color: var(--app-title);
   word-break: break-word;
-}
-
-.error-banner {
-  margin-top: 20px;
-}
-
-.summary-grid {
-  margin-top: 22px;
 }
 
 .summary-card {
@@ -183,18 +180,15 @@
 }
 
 .summary-card.download {
-  background:
-    linear-gradient(145deg, rgba(230, 245, 255, 0.96), rgba(255, 255, 255, 0.84));
+  background: var(--app-summary-download);
 }
 
 .summary-card.upload {
-  background:
-    linear-gradient(145deg, rgba(228, 252, 244, 0.96), rgba(255, 255, 255, 0.84));
+  background: var(--app-summary-upload);
 }
 
 .summary-card.neutral {
-  background:
-    linear-gradient(145deg, rgba(245, 249, 255, 0.96), rgba(255, 255, 255, 0.84));
+  background: var(--app-summary-neutral);
 }
 
 .summary-value {
@@ -202,20 +196,12 @@
   font-size: clamp(2rem, 4vw, 2.8rem);
   line-height: 1.05;
   font-weight: 700;
-  color: #10233f;
+  color: var(--app-title);
 }
 
 .summary-detail {
-  color: #5f708a;
+  color: var(--app-soft);
   line-height: 1.7;
-}
-
-.chart-card {
-  margin-top: 24px;
-}
-
-.dual-chart-grid {
-  margin-top: 24px;
 }
 
 .chart-wrap {
@@ -231,13 +217,14 @@
   gap: 16px;
   text-align: center;
   border-radius: 26px;
-  background: linear-gradient(180deg, rgba(248, 251, 255, 0.92), rgba(241, 247, 255, 0.72));
+  background: var(--app-chart-placeholder);
 }
 
 @media (max-width: 960px) {
   .app-shell {
-    width: min(100% - 24px, 1180px);
+    width: min(100% - 28px, 1180px);
     padding-top: 24px;
+    gap: 20px;
   }
 
   .hero-panel {
@@ -251,7 +238,7 @@
 
 @media (max-width: 640px) {
   .app-shell {
-    width: calc(100% - 16px);
+    width: calc(100% - 24px);
     padding-bottom: 32px;
   }
 
@@ -262,6 +249,13 @@
 
   .hero-actions {
     align-items: stretch;
+    gap: 12px;
+  }
+
+  .hero-actions .switch-hint {
+    display: flex;
+    align-items: center;
+    min-height: 42px;
   }
 
   .ip-line {
@@ -275,5 +269,9 @@
 
   .chart-wrap {
     height: 300px;
+  }
+
+  .primary-button {
+    margin-left: 0;
   }
 }
