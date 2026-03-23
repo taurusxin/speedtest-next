@@ -50,8 +50,8 @@ sudo nano /etc/speedtest-next/speedtest-next.env
 至少填写：
 
 ```bash
-SPEEDTEST_TARGET_IPV4=speedtest-v4only.taurusxin.com
-SPEEDTEST_TARGET_IPV6=speedtest-v6only.taurusxin.com
+SPEEDTEST_TARGET_IPV4=speedtest-v4only.example.com
+SPEEDTEST_TARGET_IPV6=speedtest-v6only.example.com
 ```
 
 4. 安装并启动服务：

@@ -17,7 +17,7 @@
 
 ```text
 Browser
-  ├── 访问页面 -> speedtest.taurusxin.com
+  ├── 访问页面 -> speedtest.example.com
   ├── 获取 IPv4 地址 -> v4 域名 /api/v1/ip
   ├── 获取 IPv6 地址 -> v6 域名 /api/v1/ip
   ├── 选择 IPv4 后测速 -> v4 域名 /api/v1/*
@@ -45,8 +45,8 @@ Go Service
 
 ```ts
 apiTargets: {
-  ipv4: 'speedtest-v4only.taurusxin.com',
-  ipv6: 'speedtest-v6only.taurusxin.com',
+  ipv4: 'speedtest-v4only.example.com',
+  ipv6: 'speedtest-v6only.example.com',
 }
 ```
 

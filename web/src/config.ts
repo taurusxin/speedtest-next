@@ -30,8 +30,8 @@ export const defaultSpeedtestConfig: SpeedtestConfig = {
   siteTitle: 'SpeedTest Next',
   githubUrl: 'https://github.com/taurusxin/speedtest-next',
   apiTargets: {
-    ipv4: 'speedtest-v4only.taurusxin.com',
-    ipv6: 'speedtest-v6only.taurusxin.com',
+    ipv4: 'speedtest-v4only.example.com',
+    ipv6: 'speedtest-v6only.example.com',
   },
   latency: {
     sampleCount: 10,
