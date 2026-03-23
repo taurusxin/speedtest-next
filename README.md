@@ -167,8 +167,11 @@ sudo journalctl -u speedtest-next -f
 ├── main.go                         # Go 服务入口，测速 API、静态资源托管、CORS、日志
 ├── main_test.go                    # Go 服务基础测试
 ├── Dockerfile                      # Docker 多阶段构建
-├── compose.yaml                    # Docker Compose 部署配置
-├── deploy/systemd/                 # systemd 服务配置
+├── DEVELOPMENT.md                  # 开发与构建指南
+├── deploy/                         # 部署相关配置
+│   ├── docker/                     # Docker Compose 部署配置
+│   │   └── compose.yaml
+│   └── systemd/                    # systemd 服务配置
 ├── web/                            # React 前端
 │   ├── src/
 │   │   ├── App.tsx                 # 页面与交互

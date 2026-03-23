@@ -167,8 +167,11 @@ Please refer to the [Development Guide](./DEVELOPMENT.md) to learn how to develo
 ├── main.go                         # Go service entrypoint, speed test API, static assets, CORS, and logging
 ├── main_test.go                    # Go service basic tests
 ├── Dockerfile                      # Docker multi-stage build
-├── compose.yaml                    # Docker Compose configuration
-├── deploy/systemd/                 # systemd service configuration
+├── DEVELOPMENT.md                  # Development and building guide
+├── deploy/                         # Deployment configurations
+│   ├── docker/                     # Docker Compose configuration
+│   │   └── compose.yaml
+│   └── systemd/                    # systemd service configuration
 ├── web/                            # React front-end
 │   ├── src/
 │   │   ├── App.tsx                 # Page components and interactions
