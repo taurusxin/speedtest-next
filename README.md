@@ -123,6 +123,30 @@ sudo journalctl -u speedtest-next -f
 - 服务文件：[deploy/systemd/speedtest-next.service](./deploy/systemd/speedtest-next.service)
 - 环境变量模板：[deploy/systemd/speedtest-next.env.example](./deploy/systemd/speedtest-next.env.example)
 
+### Nginx 反向代理与跨域 (CORS)
+
+Speedtest Next 后端服务会自动处理跨域请求并下发相应的 CORS 响应头。如果你使用 Nginx 作为反向代理，需要配置 `proxy_pass_header Server;` 来确保后端下发的跨域头等信息不被 Nginx 丢弃。
+
+参考配置如下：
+
+```nginx
+server {
+    listen 80;
+    server_name speedtest.example.com;
+
+    location / {
+        proxy_pass http://127.0.0.1:8080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        
+        # 必须配置：保留后端服务设置的响应头（避免 CORS 头丢失）
+        proxy_pass_header Server;
+    }
+}
+```
+
 ## 运行时环境变量
 
 支持以下环境变量：

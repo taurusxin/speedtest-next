@@ -123,6 +123,30 @@ Related files:
 - Service File: [deploy/systemd/speedtest-next.service](./deploy/systemd/speedtest-next.service)
 - Environment Variables Template: [deploy/systemd/speedtest-next.env.example](./deploy/systemd/speedtest-next.env.example)
 
+### Nginx Reverse Proxy and CORS
+
+The Speedtest Next backend service automatically handles Cross-Origin Resource Sharing (CORS) requests and sends the appropriate CORS response headers. If you use Nginx as a reverse proxy, you need to configure `proxy_pass_header Server;` to ensure that the CORS headers provided by the backend are not discarded by Nginx.
+
+Reference configuration:
+
+```nginx
+server {
+    listen 80;
+    server_name speedtest.example.com;
+
+    location / {
+        proxy_pass http://127.0.0.1:8080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        
+        # Required: Preserve headers set by the backend service (prevents CORS headers from being lost)
+        proxy_pass_header Server;
+    }
+}
+```
+
 ## Runtime Environment Variables
 
 The following environment variables are supported:
