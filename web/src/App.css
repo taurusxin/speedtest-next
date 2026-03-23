@@ -1,0 +1,279 @@
+.app-shell {
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 48px 0 64px;
+}
+
+.hero-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1.02fr) minmax(420px, 0.98fr);
+  gap: 24px;
+  align-items: stretch;
+}
+
+.hero-copy,
+.live-card,
+.summary-card,
+.chart-card,
+.error-banner {
+  border: 1px solid rgba(196, 214, 236, 0.72);
+  box-shadow: 0 18px 44px rgba(20, 66, 118, 0.12);
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(20px);
+}
+
+.hero-copy {
+  padding: 40px;
+  border-radius: 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-copy::before {
+  content: '';
+  position: absolute;
+  inset: auto auto -72px -56px;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(0, 173, 239, 0.22), rgba(0, 173, 239, 0));
+  pointer-events: none;
+}
+
+.hero-badge {
+  margin-bottom: 16px;
+  background: rgba(4, 156, 219, 0.1);
+  color: #0b7db3;
+}
+
+.hero-description {
+  max-width: 620px;
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: #4f5f79;
+}
+
+.ip-block {
+  margin-top: 22px;
+  padding: 4px 0 0;
+  max-width: 520px;
+}
+
+.ip-header {
+  margin-bottom: 10px;
+}
+
+.ip-lines {
+  display: grid;
+  gap: 10px;
+}
+
+.ip-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 0;
+  color: #5f708a;
+}
+
+.ip-line span {
+  font-weight: 700;
+  color: #6d7e96;
+}
+
+.ip-line strong {
+  color: #142341;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+  text-align: right;
+}
+
+.hero-actions {
+  margin-top: 28px;
+}
+
+.switch-hint {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #5f708a;
+}
+
+.primary-button {
+  box-shadow: 0 18px 40px rgba(4, 146, 214, 0.28);
+}
+
+.target-hint {
+  margin-top: 20px;
+  color: #5f718d;
+}
+
+.live-card {
+  min-height: 100%;
+}
+
+.live-card .mantine-SimpleGrid-root > div {
+  min-width: 0;
+}
+
+.section-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #6d7e96;
+}
+
+.speed-readout {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.speed-readout span {
+  font-family: 'Space Grotesk', 'Segoe UI', sans-serif;
+  font-size: clamp(3rem, 5vw, 4.5rem);
+  line-height: 0.95;
+  font-weight: 700;
+  color: #10233f;
+}
+
+.speed-readout small {
+  font-size: 1rem;
+  color: #687b98;
+}
+
+.status-message {
+  color: #4f607c;
+  min-height: 1.6em;
+}
+
+.metric-chip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 20px;
+  background: rgba(244, 249, 255, 0.95);
+  border: 1px solid rgba(213, 228, 246, 0.95);
+  min-width: 0;
+}
+
+.metric-label {
+  font-size: 0.82rem;
+  color: #73839b;
+}
+
+.metric-value {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #142341;
+  word-break: break-word;
+}
+
+.error-banner {
+  margin-top: 20px;
+}
+
+.summary-grid {
+  margin-top: 22px;
+}
+
+.summary-card {
+  min-height: 220px;
+}
+
+.summary-card.download {
+  background:
+    linear-gradient(145deg, rgba(230, 245, 255, 0.96), rgba(255, 255, 255, 0.84));
+}
+
+.summary-card.upload {
+  background:
+    linear-gradient(145deg, rgba(228, 252, 244, 0.96), rgba(255, 255, 255, 0.84));
+}
+
+.summary-card.neutral {
+  background:
+    linear-gradient(145deg, rgba(245, 249, 255, 0.96), rgba(255, 255, 255, 0.84));
+}
+
+.summary-value {
+  font-family: 'Space Grotesk', 'Segoe UI', sans-serif;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  line-height: 1.05;
+  font-weight: 700;
+  color: #10233f;
+}
+
+.summary-detail {
+  color: #5f708a;
+  line-height: 1.7;
+}
+
+.chart-card {
+  margin-top: 24px;
+}
+
+.dual-chart-grid {
+  margin-top: 24px;
+}
+
+.chart-wrap {
+  height: 360px;
+}
+
+.chart-placeholder {
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  text-align: center;
+  border-radius: 26px;
+  background: linear-gradient(180deg, rgba(248, 251, 255, 0.92), rgba(241, 247, 255, 0.72));
+}
+
+@media (max-width: 960px) {
+  .app-shell {
+    width: min(100% - 24px, 1180px);
+    padding-top: 24px;
+  }
+
+  .hero-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-copy {
+    padding: 28px;
+  }
+}
+
+@media (max-width: 640px) {
+  .app-shell {
+    width: calc(100% - 16px);
+    padding-bottom: 32px;
+  }
+
+  .hero-copy {
+    padding: 22px;
+    border-radius: 24px;
+  }
+
+  .hero-actions {
+    align-items: stretch;
+  }
+
+  .ip-line {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .ip-line strong {
+    text-align: left;
+  }
+
+  .chart-wrap {
+    height: 300px;
+  }
+}

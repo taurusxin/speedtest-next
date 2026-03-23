@@ -1,0 +1,19 @@
+# Go build artifacts
+/speedtest-next
+/*.exe
+/*.exe~
+/*.dll
+/*.so
+/*.dylib
+/*.test
+/*.out
+
+# Frontend build output
+/web/dist
+/web/dist-ssr
+
+# Local package manager cache
+/.pnpm-store
+
+# OS/editor noise
+.DS_Store
