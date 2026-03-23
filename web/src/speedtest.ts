@@ -47,6 +47,15 @@ interface LatencyResult {
 
 const wait = (ms: number) => new Promise<void>((resolve) => window.setTimeout(resolve, ms))
 
+const smoothValue = (previous: number | null, next: number) => {
+  if (previous === null) {
+    return next
+  }
+
+  const alpha = speedtestConfig.displaySmoothingFactor
+  return previous * (1 - alpha) + next * alpha
+}
+
 const toMbps = (bytes: number, durationMs: number) => {
   if (durationMs <= 0) {
     return 0
@@ -198,6 +207,7 @@ async function runPhase(
   let timerId = 0
   let lastSampleAt = startedAt
   let series: PhaseSample[] = []
+  let smoothedMbps: number | null = null
 
   const onBytes = (count: number) => {
     totalBytes += count
@@ -247,17 +257,18 @@ async function runPhase(
       const durationMs = now - lastSampleAt
       const deltaBytes = totalBytes - lastBytes
       const mbps = toMbps(deltaBytes, durationMs)
+      smoothedMbps = smoothValue(smoothedMbps, mbps)
       peakMbps = Math.max(peakMbps, mbps)
       series = clampSeries([
         ...series,
         {
           timeSeconds: (now - startedAt) / 1000,
-          mbps,
+          mbps: smoothedMbps,
         },
       ])
       lastBytes = totalBytes
       lastSampleAt = now
-      emit({ status, currentMbps: mbps })
+      emit({ status, currentMbps: smoothedMbps })
 
       if (now >= deadline || signal.aborted) {
         phaseController.abort()

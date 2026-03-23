@@ -21,6 +21,7 @@ export interface SpeedtestConfig {
   upload: SpeedPhaseConfig
   samplingIntervalMs: number
   chartPointsLimit: number
+  displaySmoothingFactor: number
 }
 
 export const speedtestConfig: SpeedtestConfig = {
@@ -35,13 +36,14 @@ export const speedtestConfig: SpeedtestConfig = {
   download: {
     concurrency: 6,
     durationMs: 9000,
-    chunkBytes: 6 * 1024 * 1024,
+    chunkBytes: 12 * 1024 * 1024,
   },
   upload: {
     concurrency: 4,
     durationMs: 7000,
-    chunkBytes: 1024 * 1024,
+    chunkBytes: 2 * 1024 * 1024,
   },
-  samplingIntervalMs: 250,
+  samplingIntervalMs: 500,
   chartPointsLimit: 120,
+  displaySmoothingFactor: 0.35,
 }
