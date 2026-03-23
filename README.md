@@ -21,57 +21,9 @@
 
 ## 部署方式
 
-### 方式一：systemd 守护进程
+### 方式一：Docker Compose
 
-适合直接使用 GitHub Release 里的二进制，在服务器上通过 systemd 托管。
-
-1. 从 GitHub Releases 下载对应平台的二进制包并解压
-2. 上传到服务器，例如：
-
-```bash
-sudo mkdir -p /opt/speedtest-next
-sudo cp speedtest-next /opt/speedtest-next/
-sudo chmod +x /opt/speedtest-next/speedtest-next
-```
-
-3. 准备环境变量文件：
-
-```bash
-sudo mkdir -p /etc/speedtest-next
-sudo cp deploy/systemd/speedtest-next.env.example /etc/speedtest-next/speedtest-next.env
-sudo nano /etc/speedtest-next/speedtest-next.env
-```
-
-至少填写：
-
-```bash
-SPEEDTEST_TARGET_IPV4=speedtest-v4only.example.com
-SPEEDTEST_TARGET_IPV6=speedtest-v6only.example.com
-```
-
-4. 安装并启动服务：
-
-```bash
-sudo cp deploy/systemd/speedtest-next.service /etc/systemd/system/speedtest-next.service
-sudo systemctl daemon-reload
-sudo systemctl enable --now speedtest-next
-```
-
-5. 查看运行状态：
-
-```bash
-sudo systemctl status speedtest-next
-sudo journalctl -u speedtest-next -f
-```
-
-相关文件：
-
-- 服务文件：[deploy/systemd/speedtest-next.service](./deploy/systemd/speedtest-next.service)
-- 环境变量模板：[deploy/systemd/speedtest-next.env.example](./deploy/systemd/speedtest-next.env.example)
-
-### 方式二：Docker Compose
-
-适合直接使用 Docker Hub 自动发布的镜像。
+适合直接使用 Docker Hub 自动发布的镜像，请参考[Compose 配置文件](./deploy/docker/compose.yaml)
 
 1. 复制环境变量模板：
 
@@ -120,6 +72,54 @@ docker compose down
 
 - Compose 文件：[compose.yaml](./compose.yaml)
 - 环境变量模板：[.env.example](./.env.example)
+
+### 方式二：systemd 守护进程
+
+适合直接使用 GitHub Release 里的二进制，在服务器上通过 systemd 托管。
+
+1. 从 GitHub Releases 下载对应平台的二进制包并解压
+2. 上传到服务器，例如：
+
+```bash
+sudo mkdir -p /opt/speedtest-next
+sudo cp speedtest-next /opt/speedtest-next/
+sudo chmod +x /opt/speedtest-next/speedtest-next
+```
+
+3. 准备环境变量文件：
+
+```bash
+sudo mkdir -p /etc/speedtest-next
+sudo cp deploy/systemd/speedtest-next.env.example /etc/speedtest-next/speedtest-next.env
+sudo nano /etc/speedtest-next/speedtest-next.env
+```
+
+至少填写：
+
+```bash
+SPEEDTEST_TARGET_IPV4=speedtest-v4only.example.com
+SPEEDTEST_TARGET_IPV6=speedtest-v6only.example.com
+```
+
+4. 安装并启动服务：
+
+```bash
+sudo cp deploy/systemd/speedtest-next.service /etc/systemd/system/speedtest-next.service
+sudo systemctl daemon-reload
+sudo systemctl enable --now speedtest-next
+```
+
+5. 查看运行状态：
+
+```bash
+sudo systemctl status speedtest-next
+sudo journalctl -u speedtest-next -f
+```
+
+相关文件：
+
+- 服务文件：[deploy/systemd/speedtest-next.service](./deploy/systemd/speedtest-next.service)
+- 环境变量模板：[deploy/systemd/speedtest-next.env.example](./deploy/systemd/speedtest-next.env.example)
 
 ## 运行时环境变量
 
