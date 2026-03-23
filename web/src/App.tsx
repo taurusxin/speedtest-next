@@ -14,7 +14,17 @@ import {
   ThemeIcon,
   Title,
 } from '@mantine/core'
-import { IconActivityHeartbeat, IconArrowsDownUp, IconBrandSpeedtest, IconChartLine, IconClockHour4, IconCloudUpload, IconDownload, IconInfoCircle, IconWorld } from '@tabler/icons-react'
+import {
+  IconActivityHeartbeat,
+  IconArrowsDownUp,
+  IconBrandSpeedtest,
+  IconChartLine,
+  IconClockHour4,
+  IconCloudUpload,
+  IconDownload,
+  IconInfoCircle,
+  IconWorld,
+} from '@tabler/icons-react'
 import {
   CartesianGrid,
   Line,
@@ -90,7 +100,7 @@ async function fetchStackIP(baseUrl: string) {
 }
 
 function buildPhaseChartData(series: Array<{ timeSeconds: number; mbps: number }>) {
-  return series.map((sample) => ({
+  return series.map(sample => ({
     second: Number(sample.timeSeconds.toFixed(2)),
     speed: sample.mbps,
   }))
@@ -113,7 +123,7 @@ function App() {
   useEffect(() => {
     let active = true
 
-    void loadRuntimeConfig().then((runtimeConfig) => {
+    void loadRuntimeConfig().then(runtimeConfig => {
       if (!active) {
         return
       }
@@ -149,12 +159,12 @@ function App() {
     setError(null)
 
     try {
-      const measured = await runSpeedtest(stack, controller.signal, (event) => {
+      const measured = await runSpeedtest(stack, controller.signal, event => {
         setStatus(event.status)
         setCurrentMbps(event.currentMbps ?? 0)
         setStatusMessage(event.message ?? statusLabels[event.status])
         if (event.snapshot) {
-          setResult((previous) => ({
+          setResult(previous => ({
             ...(previous ?? {}),
             ...event.snapshot,
           }))
@@ -162,9 +172,7 @@ function App() {
       })
 
       setResult(measured)
-      setCurrentMbps(
-        measured.uploadMbps > 0 ? measured.uploadMbps : measured.downloadMbps,
-      )
+      setCurrentMbps(measured.uploadMbps > 0 ? measured.uploadMbps : measured.downloadMbps)
       setStatus('completed')
       setStatusMessage('下载、上传、延迟和抖动测试均已完成')
     } catch (caughtError) {
@@ -172,8 +180,7 @@ function App() {
         return
       }
 
-      const message =
-        caughtError instanceof Error ? caughtError.message : '测速过程中发生未知错误'
+      const message = caughtError instanceof Error ? caughtError.message : '测速过程中发生未知错误'
       setStatus('failed')
       setError(message)
       setStatusMessage(message)
@@ -184,9 +191,7 @@ function App() {
     status === 'upload' ? '当前上传速度' : status === 'download' ? '当前下载速度' : '即时速度'
   const isRunning = ['preparing', 'latency', 'download', 'upload'].includes(status)
   const hasLatencyResult =
-    result !== null &&
-    typeof result.latencyMs === 'number' &&
-    typeof result.jitterMs === 'number'
+    result !== null && typeof result.latencyMs === 'number' && typeof result.jitterMs === 'number'
   const hasDownloadResult =
     result !== null &&
     typeof result.downloadMbps === 'number' &&
@@ -208,7 +213,7 @@ function App() {
         <div className="hero-copy">
           <Group justify="space-between" align="center" className="hero-topbar">
             <Badge className="hero-badge" size="lg" radius="xl">
-              TaurusXin Network Intelligence
+              Next Generation Speedtest
             </Badge>
             <Anchor
               href={speedtestConfig.githubUrl}
@@ -245,7 +250,7 @@ function App() {
             <Text className="switch-hint">测试类型</Text>
             <SegmentedControl
               value={stack}
-              onChange={(value) => setStack(value as StackMode)}
+              onChange={value => setStack(value as StackMode)}
               data={[
                 { label: 'IPv4', value: 'ipv4' },
                 { label: 'IPv6', value: 'ipv6' },
@@ -319,9 +324,17 @@ function App() {
         <SummaryCard
           title="延迟与抖动"
           icon={<IconClockHour4 size={18} />}
-          value={hasLatencyResult ? `${formatMetric(result.latencyMs!, 1)} / ${formatMetric(result.jitterMs!, 1)} ms` : '-'}
+          value={
+            hasLatencyResult
+              ? `${formatMetric(result.latencyMs!, 1)} / ${formatMetric(result.jitterMs!, 1)} ms`
+              : '-'
+          }
           accent="neutral"
-          detail={hasLatencyResult ? '延迟阶段完成后立即展示，便于先确认链路质量。' : '等待延迟与抖动测试完成。'}
+          detail={
+            hasLatencyResult
+              ? '延迟阶段完成后立即展示，便于先确认链路质量。'
+              : '等待延迟与抖动测试完成。'
+          }
         />
         <SummaryCard
           title="下载均速"
@@ -350,7 +363,9 @@ function App() {
       <SimpleGrid cols={{ base: 1, lg: 2 }} spacing="lg" className="dual-chart-grid">
         <ChartCard
           title="下载速度曲线"
-          badge={downloadChartData.length > 0 ? `${downloadChartData.length} 个采样点` : '等待下载测速'}
+          badge={
+            downloadChartData.length > 0 ? `${downloadChartData.length} 个采样点` : '等待下载测速'
+          }
           color="#0087ff"
           data={downloadChartData}
           emptyTitle="完成下载测速后显示曲线"
@@ -415,8 +430,8 @@ function ChartCard({
                 width={56}
               />
               <Tooltip
-                formatter={(value) => [`${Number(value ?? 0).toFixed(2)} Mbps`, '速度']}
-                labelFormatter={(value) => `时间 ${Number(value).toFixed(2)}s`}
+                formatter={value => [`${Number(value ?? 0).toFixed(2)} Mbps`, '速度']}
+                labelFormatter={value => `时间 ${Number(value).toFixed(2)}s`}
               />
               <Line
                 type="monotone"
