@@ -26,8 +26,8 @@ export interface SpeedtestConfig {
 
 export const speedtestConfig: SpeedtestConfig = {
   apiTargets: {
-    ipv4: 'https://v4-speedtest.taurusxin.com',
-    ipv6: 'https://v6-speedtest.taurusxin.com',
+    ipv4: 'https://speedtest-v4only.taurusxin.com',
+    ipv6: 'https://speedtest-v6only.taurusxin.com',
   },
   latency: {
     sampleCount: 10,
