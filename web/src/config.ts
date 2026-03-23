@@ -24,18 +24,10 @@ export interface SpeedtestConfig {
   displaySmoothingFactor: number
 }
 
-export function resolveTargetBaseUrl(target: string) {
-  if (/^https?:\/\//i.test(target)) {
-    return target
-  }
-
-  return `${window.location.protocol}//${target}`
-}
-
-export const speedtestConfig: SpeedtestConfig = {
+export const defaultSpeedtestConfig: SpeedtestConfig = {
   apiTargets: {
-    ipv4: 'https://speedtest-v4only.taurusxin.com',
-    ipv6: 'https://speedtest-v6only.taurusxin.com',
+    ipv4: 'speedtest-v4only.taurusxin.com',
+    ipv6: 'speedtest-v6only.taurusxin.com',
   },
   latency: {
     sampleCount: 10,
@@ -54,4 +46,56 @@ export const speedtestConfig: SpeedtestConfig = {
   samplingIntervalMs: 250,
   chartPointsLimit: 120,
   displaySmoothingFactor: 0.35,
+}
+
+let speedtestConfigState: SpeedtestConfig = defaultSpeedtestConfig
+
+export function resolveTargetBaseUrl(target: string) {
+  if (/^https?:\/\//i.test(target)) {
+    return target
+  }
+
+  return `${window.location.protocol}//${target}`
+}
+
+export function getSpeedtestConfig() {
+  return speedtestConfigState
+}
+
+export async function loadRuntimeConfig() {
+  try {
+    const response = await fetch('/api/v1/runtime-config', {
+      cache: 'no-store',
+    })
+
+    if (!response.ok) {
+      return speedtestConfigState
+    }
+
+    const runtimeConfig = (await response.json()) as Partial<SpeedtestConfig>
+    speedtestConfigState = {
+      ...defaultSpeedtestConfig,
+      ...runtimeConfig,
+      apiTargets: {
+        ...defaultSpeedtestConfig.apiTargets,
+        ...runtimeConfig.apiTargets,
+      },
+      latency: {
+        ...defaultSpeedtestConfig.latency,
+        ...runtimeConfig.latency,
+      },
+      download: {
+        ...defaultSpeedtestConfig.download,
+        ...runtimeConfig.download,
+      },
+      upload: {
+        ...defaultSpeedtestConfig.upload,
+        ...runtimeConfig.upload,
+      },
+    }
+  } catch {
+    speedtestConfigState = defaultSpeedtestConfig
+  }
+
+  return speedtestConfigState
 }

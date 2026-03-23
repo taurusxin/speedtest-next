@@ -25,8 +25,9 @@ import {
 } from 'recharts'
 import './App.css'
 import {
+  getSpeedtestConfig,
+  loadRuntimeConfig,
   resolveTargetBaseUrl,
-  speedtestConfig,
   type StackMode,
 } from './config'
 import { runSpeedtest, type SpeedtestResult, type TestStatus } from './speedtest'
@@ -105,20 +106,29 @@ function App() {
     ipv4: '加载中',
     ipv6: '加载中',
   })
+  const [speedtestConfig, setSpeedtestConfig] = useState(getSpeedtestConfig())
   const abortRef = useRef<AbortController | null>(null)
 
   useEffect(() => {
     let active = true
 
-    void Promise.all([
-      fetchStackIP(speedtestConfig.apiTargets.ipv4),
-      fetchStackIP(speedtestConfig.apiTargets.ipv6),
-    ]).then(([ipv4, ipv6]) => {
+    void loadRuntimeConfig().then((runtimeConfig) => {
       if (!active) {
         return
       }
 
-      setIpInfo({ ipv4, ipv6 })
+      setSpeedtestConfig(runtimeConfig)
+
+      void Promise.all([
+        fetchStackIP(runtimeConfig.apiTargets.ipv4),
+        fetchStackIP(runtimeConfig.apiTargets.ipv6),
+      ]).then(([ipv4, ipv6]) => {
+        if (!active) {
+          return
+        }
+
+        setIpInfo({ ipv4, ipv6 })
+      })
     })
 
     return () => {

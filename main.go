@@ -3,6 +3,7 @@ package main
 import (
 	"embed"
 	"encoding/json"
+	"errors"
 	"io"
 	"io/fs"
 	"log"
@@ -26,9 +27,38 @@ const (
 //go:embed web/dist web/dist/**
 var embeddedFrontend embed.FS
 
+type phaseConfig struct {
+	Concurrency int   `json:"concurrency"`
+	DurationMS  int   `json:"durationMs"`
+	ChunkBytes  int64 `json:"chunkBytes"`
+}
+
+type latencyConfig struct {
+	SampleCount int `json:"sampleCount"`
+	SampleGapMS int `json:"sampleGapMs"`
+}
+
+type runtimeConfig struct {
+	APITargets struct {
+		IPv4 string `json:"ipv4"`
+		IPv6 string `json:"ipv6"`
+	} `json:"apiTargets"`
+	Latency                latencyConfig `json:"latency"`
+	Download               phaseConfig   `json:"download"`
+	Upload                 phaseConfig   `json:"upload"`
+	SamplingIntervalMS     int           `json:"samplingIntervalMs"`
+	ChartPointsLimit       int           `json:"chartPointsLimit"`
+	DisplaySmoothingFactor float64       `json:"displaySmoothingFactor"`
+}
+
 func main() {
 	addr := envOrDefault("SPEEDTEST_ADDR", defaultAddr)
-	handler := newServer(envOrDefault("SPEEDTEST_STATIC_DIR", ""))
+	cfg, err := loadRuntimeConfigFromEnv()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	handler := newServer(envOrDefault("SPEEDTEST_STATIC_DIR", ""), cfg)
 
 	log.Printf("speedtest server listening on %s", addr)
 	if err := http.ListenAndServe(addr, handler); err != nil {
@@ -36,7 +66,7 @@ func main() {
 	}
 }
 
-func newServer(staticDir string) http.Handler {
+func newServer(staticDir string, cfg runtimeConfig) http.Handler {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/api/v1/health", func(w http.ResponseWriter, r *http.Request) {
@@ -50,6 +80,10 @@ func newServer(staticDir string) http.Handler {
 		writeJSON(w, http.StatusOK, map[string]string{
 			"serverTime": time.Now().UTC().Format(time.RFC3339Nano),
 		})
+	})
+
+	mux.HandleFunc("/api/v1/runtime-config", func(w http.ResponseWriter, r *http.Request) {
+		writeJSON(w, http.StatusOK, cfg)
 	})
 
 	mux.HandleFunc("/api/v1/ip", func(w http.ResponseWriter, r *http.Request) {
@@ -182,7 +216,7 @@ func shouldSkipAccessLog(r *http.Request, noisyLoggingEnabled bool) bool {
 	}
 
 	switch r.URL.Path {
-	case "/api/v1/health", "/api/v1/latency", "/api/v1/ip", "/api/v1/download", "/api/v1/upload":
+	case "/api/v1/health", "/api/v1/runtime-config", "/api/v1/latency", "/api/v1/ip", "/api/v1/download", "/api/v1/upload":
 		return true
 	default:
 		return r.Method == http.MethodOptions && strings.HasPrefix(r.URL.Path, "/api/")
@@ -265,6 +299,72 @@ func envOrDefault(key, fallback string) string {
 		return fallback
 	}
 	return value
+}
+
+func envIntOrDefault(key string, fallback int) int {
+	value := strings.TrimSpace(os.Getenv(key))
+	if value == "" {
+		return fallback
+	}
+
+	parsed, err := strconv.Atoi(value)
+	if err != nil {
+		return fallback
+	}
+
+	return parsed
+}
+
+func envInt64OrDefault(key string, fallback int64) int64 {
+	value := strings.TrimSpace(os.Getenv(key))
+	if value == "" {
+		return fallback
+	}
+
+	parsed, err := strconv.ParseInt(value, 10, 64)
+	if err != nil {
+		return fallback
+	}
+
+	return parsed
+}
+
+func envFloatOrDefault(key string, fallback float64) float64 {
+	value := strings.TrimSpace(os.Getenv(key))
+	if value == "" {
+		return fallback
+	}
+
+	parsed, err := strconv.ParseFloat(value, 64)
+	if err != nil {
+		return fallback
+	}
+
+	return parsed
+}
+
+func loadRuntimeConfigFromEnv() (runtimeConfig, error) {
+	cfg := runtimeConfig{}
+
+	cfg.APITargets.IPv4 = strings.TrimSpace(os.Getenv("SPEEDTEST_TARGET_IPV4"))
+	cfg.APITargets.IPv6 = strings.TrimSpace(os.Getenv("SPEEDTEST_TARGET_IPV6"))
+	if cfg.APITargets.IPv4 == "" || cfg.APITargets.IPv6 == "" {
+		return runtimeConfig{}, errors.New("SPEEDTEST_TARGET_IPV4 and SPEEDTEST_TARGET_IPV6 are required")
+	}
+
+	cfg.Latency.SampleCount = envIntOrDefault("SPEEDTEST_LATENCY_SAMPLE_COUNT", 10)
+	cfg.Latency.SampleGapMS = envIntOrDefault("SPEEDTEST_LATENCY_SAMPLE_GAP_MS", 160)
+	cfg.Download.Concurrency = envIntOrDefault("SPEEDTEST_DOWNLOAD_CONCURRENCY", 6)
+	cfg.Download.DurationMS = envIntOrDefault("SPEEDTEST_DOWNLOAD_DURATION_MS", 9000)
+	cfg.Download.ChunkBytes = envInt64OrDefault("SPEEDTEST_DOWNLOAD_CHUNK_BYTES", 6*1024*1024)
+	cfg.Upload.Concurrency = envIntOrDefault("SPEEDTEST_UPLOAD_CONCURRENCY", 4)
+	cfg.Upload.DurationMS = envIntOrDefault("SPEEDTEST_UPLOAD_DURATION_MS", 7000)
+	cfg.Upload.ChunkBytes = envInt64OrDefault("SPEEDTEST_UPLOAD_CHUNK_BYTES", 1024*1024)
+	cfg.SamplingIntervalMS = envIntOrDefault("SPEEDTEST_SAMPLING_INTERVAL_MS", 250)
+	cfg.ChartPointsLimit = envIntOrDefault("SPEEDTEST_CHART_POINTS_LIMIT", 120)
+	cfg.DisplaySmoothingFactor = envFloatOrDefault("SPEEDTEST_DISPLAY_SMOOTHING_FACTOR", 0.35)
+
+	return cfg, nil
 }
 
 func clientIP(r *http.Request) string {

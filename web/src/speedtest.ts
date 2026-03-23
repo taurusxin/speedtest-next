@@ -1,6 +1,6 @@
 import {
+  getSpeedtestConfig,
   resolveTargetBaseUrl,
-  speedtestConfig,
   type SpeedPhaseConfig,
   type StackMode,
 } from './config'
@@ -57,7 +57,7 @@ const smoothValue = (previous: number | null, next: number) => {
     return next
   }
 
-  const alpha = speedtestConfig.displaySmoothingFactor
+  const alpha = getSpeedtestConfig().displaySmoothingFactor
   return previous * (1 - alpha) + next * alpha
 }
 
@@ -70,6 +70,7 @@ const toMbps = (bytes: number, durationMs: number) => {
 }
 
 const clampSeries = (series: PhaseSample[]) => {
+  const speedtestConfig = getSpeedtestConfig()
   if (series.length <= speedtestConfig.chartPointsLimit) {
     return series
   }
@@ -90,6 +91,7 @@ async function ensureHealthy(baseUrl: string, signal: AbortSignal) {
 }
 
 async function measureLatency(baseUrl: string, signal: AbortSignal): Promise<LatencyResult> {
+  const speedtestConfig = getSpeedtestConfig()
   const samples: number[] = []
 
   for (let index = 0; index < speedtestConfig.latency.sampleCount; index += 1) {
@@ -201,6 +203,7 @@ async function runPhase(
   signal: AbortSignal,
   emit: (event: StageEvent) => void,
 ): Promise<PhaseRunResult> {
+  const speedtestConfig = getSpeedtestConfig()
   const phaseController = new AbortController()
   const stopPhase = () => phaseController.abort()
   signal.addEventListener('abort', stopPhase, { once: true })
@@ -323,6 +326,7 @@ export async function runSpeedtest(
   signal: AbortSignal,
   emit: (event: StageEvent) => void,
 ): Promise<SpeedtestResult> {
+  const speedtestConfig = getSpeedtestConfig()
   const baseUrl = resolveTargetBaseUrl(speedtestConfig.apiTargets[stack])
 
   emit({ status: 'preparing', message: '检查测速节点可用性' })

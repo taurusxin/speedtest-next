@@ -11,13 +11,13 @@ ExecStart=/opt/speedtest-next/speedtest-next
 Restart=always
 RestartSec=3
 
-Environment=SPEEDTEST_ADDR=:8080
-Environment=SPEEDTEST_LOG_NOISY_API=false
+EnvironmentFile=-/etc/speedtest-next/speedtest-next.env
 
 NoNewPrivileges=true
 PrivateTmp=true
 ProtectSystem=strict
 ProtectHome=true
+ReadOnlyPaths=/opt/speedtest-next
 
 [Install]
 WantedBy=multi-user.target

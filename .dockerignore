@@ -1,0 +1,10 @@
+.git
+.gitignore
+.pnpm-store
+node_modules
+web/node_modules
+web/dist
+dist
+speedtest-next
+docs
+deploy
