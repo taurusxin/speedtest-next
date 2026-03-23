@@ -43,9 +43,23 @@
 }
 
 .hero-badge {
-  margin-bottom: 16px;
   background: var(--app-badge-bg);
   color: var(--app-badge-color);
+}
+
+.hero-topbar {
+  margin-bottom: 16px;
+}
+
+.github-link {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--app-soft);
+  text-decoration: none;
+}
+
+.github-link:hover {
+  color: var(--app-title);
 }
 
 .hero-description {

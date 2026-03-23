@@ -39,6 +39,8 @@ type latencyConfig struct {
 }
 
 type runtimeConfig struct {
+	SiteTitle  string `json:"siteTitle"`
+	GitHubURL  string `json:"githubUrl"`
 	APITargets struct {
 		IPv4 string `json:"ipv4"`
 		IPv6 string `json:"ipv6"`
@@ -350,6 +352,8 @@ func envFloatOrDefault(key string, fallback float64) float64 {
 
 func loadRuntimeConfigFromEnv() (runtimeConfig, error) {
 	cfg := runtimeConfig{}
+	cfg.SiteTitle = envOrDefault("SPEEDTEST_SITE_TITLE", "SpeedTest Next")
+	cfg.GitHubURL = envOrDefault("SPEEDTEST_GITHUB_URL", "https://github.com/taurusxin/speedtest-next")
 
 	cfg.APITargets.IPv4 = strings.TrimSpace(os.Getenv("SPEEDTEST_TARGET_IPV4"))
 	cfg.APITargets.IPv6 = strings.TrimSpace(os.Getenv("SPEEDTEST_TARGET_IPV6"))

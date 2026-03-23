@@ -12,6 +12,8 @@ export interface DualStackTargetMap {
 }
 
 export interface SpeedtestConfig {
+  siteTitle: string
+  githubUrl: string
   apiTargets: DualStackTargetMap
   latency: {
     sampleCount: number
@@ -25,6 +27,8 @@ export interface SpeedtestConfig {
 }
 
 export const defaultSpeedtestConfig: SpeedtestConfig = {
+  siteTitle: 'SpeedTest Next',
+  githubUrl: 'https://github.com/taurusxin/speedtest-next',
   apiTargets: {
     ipv4: 'speedtest-v4only.taurusxin.com',
     ipv6: 'speedtest-v6only.taurusxin.com',

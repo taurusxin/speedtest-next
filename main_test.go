@@ -12,6 +12,8 @@ import (
 
 func testRuntimeConfig() runtimeConfig {
 	cfg := runtimeConfig{}
+	cfg.SiteTitle = "SpeedTest Next"
+	cfg.GitHubURL = "https://github.com/taurusxin/speedtest-next"
 	cfg.APITargets.IPv4 = "speedtest-v4.example.com"
 	cfg.APITargets.IPv6 = "speedtest-v6.example.com"
 	cfg.Latency.SampleCount = 10

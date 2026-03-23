@@ -6,8 +6,11 @@
 ![Docker](https://img.shields.io/badge/Docker-ready-2496ED?logo=docker&logoColor=white)
 ![IPv4/IPv6](https://img.shields.io/badge/Network-IPv4%20%2F%20IPv6-0F766E)
 ![Theme](https://img.shields.io/badge/UI-Light%20%2F%20Dark-7C3AED)
+[![GitHub](https://img.shields.io/badge/GitHub-taurusxin%2Fspeedtest--next-181717?logo=github&logoColor=white)](https://github.com/taurusxin/speedtest-next)
 
 一个基于 Go + React 的在线网络测速平台，支持 IPv4 / IPv6 双栈切换、延迟与抖动测试、下载/上传测速，以及前端曲线展示。
+
+项目地址：[github.com/taurusxin/speedtest-next](https://github.com/taurusxin/speedtest-next)
 
 ![Speedtest Next Demo](./assets/demo.png)
 
@@ -119,6 +122,8 @@ Go 服务支持以下环境变量：
 - `SPEEDTEST_ADDR`：监听地址，默认 `:8080`
 - `SPEEDTEST_STATIC_DIR`：可选，指定外部静态目录；设置后会覆盖嵌入资源
 - `SPEEDTEST_LOG_NOISY_API`：是否输出高频测速接口访问日志，默认 `false`
+- `SPEEDTEST_SITE_TITLE`：可选，页面大标题与浏览器标签标题，默认 `SpeedTest Next`
+- `SPEEDTEST_GITHUB_URL`：可选，页面右上角 GitHub 链接地址，默认项目仓库地址
 - `SPEEDTEST_TARGET_IPV4`：必填，IPv4 测速目标域名或完整地址
 - `SPEEDTEST_TARGET_IPV6`：必填，IPv6 测速目标域名或完整地址
 - `SPEEDTEST_LATENCY_SAMPLE_COUNT`：可选，默认 `10`

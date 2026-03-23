@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import {
   Alert,
+  Anchor,
   Badge,
   Button,
   Card,
@@ -197,14 +198,28 @@ function App() {
   const downloadChartData = buildPhaseChartData(result?.downloadSeries ?? [])
   const uploadChartData = buildPhaseChartData(result?.uploadSeries ?? [])
 
+  useEffect(() => {
+    document.title = speedtestConfig.siteTitle
+  }, [speedtestConfig.siteTitle])
+
   return (
     <main className="app-shell">
       <section className="hero-panel">
         <div className="hero-copy">
-          <Badge className="hero-badge" size="lg" radius="xl">
-            TaurusXin Network Intelligence
-          </Badge>
-          <Title order={1}>TaurusXin 网络测速平台</Title>
+          <Group justify="space-between" align="center" className="hero-topbar">
+            <Badge className="hero-badge" size="lg" radius="xl">
+              TaurusXin Network Intelligence
+            </Badge>
+            <Anchor
+              href={speedtestConfig.githubUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="github-link"
+            >
+              GitHub
+            </Anchor>
+          </Group>
+          <Title order={1}>{speedtestConfig.siteTitle}</Title>
           <Text className="hero-description">
             通过浏览器即可测试您与全球多个节点之间的网络性能，全面展示下载/上传速度、延迟、抖动等关键指标，以及实时速度曲线，帮助您深入了解当前网络状况。
           </Text>
