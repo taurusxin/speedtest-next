@@ -1,9 +1,6 @@
 services:
   speedtest-next:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: speedtest-next:latest
+    image: taurusxin/speedtest-next:${IMAGE_TAG:-latest}
     container_name: speedtest-next
     restart: unless-stopped
     ports:
