@@ -1,6 +1,15 @@
 # Speedtest Next
 
+![Go](https://img.shields.io/badge/Go-1.26+-00ADD8?logo=go&logoColor=white)
+![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=0B1220)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-ready-2496ED?logo=docker&logoColor=white)
+![IPv4/IPv6](https://img.shields.io/badge/Network-IPv4%20%2F%20IPv6-0F766E)
+![Theme](https://img.shields.io/badge/UI-Light%20%2F%20Dark-7C3AED)
+
 一个基于 Go + React 的在线网络测速平台，支持 IPv4 / IPv6 双栈切换、延迟与抖动测试、下载/上传测速，以及前端曲线展示。
+
+![Speedtest Next Demo](./assets/demo.png)
 
 ## 特性
 
