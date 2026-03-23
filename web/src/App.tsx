@@ -24,7 +24,11 @@ import {
   YAxis,
 } from 'recharts'
 import './App.css'
-import { speedtestConfig, type StackMode } from './config'
+import {
+  resolveTargetBaseUrl,
+  speedtestConfig,
+  type StackMode,
+} from './config'
 import { runSpeedtest, type SpeedtestResult, type TestStatus } from './speedtest'
 
 const statusLabels: Record<TestStatus, string> = {
@@ -64,8 +68,10 @@ function formatMetric(value: number, digits = 1) {
 }
 
 async function fetchStackIP(baseUrl: string) {
+  const resolvedBaseUrl = resolveTargetBaseUrl(baseUrl)
+
   try {
-    const response = await fetch(`${baseUrl}/api/v1/ip`, {
+    const response = await fetch(`${resolvedBaseUrl}/api/v1/ip`, {
       cache: 'no-store',
       mode: 'cors',
     })

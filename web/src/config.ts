@@ -24,6 +24,14 @@ export interface SpeedtestConfig {
   displaySmoothingFactor: number
 }
 
+export function resolveTargetBaseUrl(target: string) {
+  if (/^https?:\/\//i.test(target)) {
+    return target
+  }
+
+  return `${window.location.protocol}//${target}`
+}
+
 export const speedtestConfig: SpeedtestConfig = {
   apiTargets: {
     ipv4: 'https://speedtest-v4only.taurusxin.com',

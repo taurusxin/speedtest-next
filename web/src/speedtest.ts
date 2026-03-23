@@ -1,4 +1,9 @@
-import { speedtestConfig, type SpeedPhaseConfig, type StackMode } from './config'
+import {
+  resolveTargetBaseUrl,
+  speedtestConfig,
+  type SpeedPhaseConfig,
+  type StackMode,
+} from './config'
 
 export type TestStatus =
   | 'idle'
@@ -318,7 +323,7 @@ export async function runSpeedtest(
   signal: AbortSignal,
   emit: (event: StageEvent) => void,
 ): Promise<SpeedtestResult> {
-  const baseUrl = speedtestConfig.apiTargets[stack]
+  const baseUrl = resolveTargetBaseUrl(speedtestConfig.apiTargets[stack])
 
   emit({ status: 'preparing', message: '检查测速节点可用性' })
   await ensureHealthy(baseUrl, signal)
