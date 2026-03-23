@@ -1,5 +1,7 @@
 # Speedtest Next
 
+简体中文 | [English](./README.en.md)
+
 [![Docker](https://img.shields.io/badge/Docker-ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://hub.docker.com/r/taurusxin/speedtest-next)
 [![License](https://img.shields.io/github/license/taurusxin/speedtest-next?style=for-the-badge&logo=opensourceinitiative&logoColor=white&color=3DA639)](https://github.com/taurusxin/speedtest-next/blob/main/LICENSE)
 [![Release](https://img.shields.io/github/v/release/taurusxin/speedtest-next?style=for-the-badge&logo=github&logoColor=white&color=181717)](https://github.com/taurusxin/speedtest-next/releases)
@@ -153,66 +155,9 @@ sudo journalctl -u speedtest-next -f
 - 其它测速参数均为可选，不传时使用内置默认值
 - 前端启动后会从后端 `/api/v1/runtime-config` 读取这些配置，因此即使前端是静态资源，也能在运行时动态生效
 
-## 本地开发
+## 开发与构建
 
-环境要求：
-
-- Go 1.26+
-- Node.js 20+
-- `pnpm`
-
-依赖管理约定：
-
-- Node.js 项目使用 `pnpm`
-- 如果后续引入 Python 辅助脚本，使用 `uv`
-
-安装前端依赖：
-
-```bash
-cd web
-pnpm install
-```
-
-启动前端开发环境：
-
-```bash
-cd web
-pnpm dev
-```
-
-启动 Go 服务：
-
-```bash
-export SPEEDTEST_TARGET_IPV4=speedtest-v4only.taurusxin.com
-export SPEEDTEST_TARGET_IPV6=speedtest-v6only.taurusxin.com
-go run .
-```
-
-默认情况下：
-
-- 前端开发服务器运行在 `http://localhost:5173`
-- Go 服务运行在 `http://localhost:8080`
-
-## 本地构建
-
-先构建前端：
-
-```bash
-cd web
-pnpm build
-```
-
-再构建 Go 二进制：
-
-```bash
-cd ..
-go build
-```
-
-说明：
-
-- Go 会通过 `embed` 将 `web/dist` 打包进最终二进制
-- 如果前端未先构建，最终二进制将不会包含最新页面资源
+请参阅 [开发指南](./DEVELOPMENT.md) 了解如何在本地进行开发和构建项目。
 
 ## 项目结构
 
